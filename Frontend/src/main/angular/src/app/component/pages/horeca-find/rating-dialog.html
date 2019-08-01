@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>Rating voor {{data.naam}}</h1>
+<hr />
+<div mat-dialog-content>
+  <p>Geef een rating aan horeca-zaak: {{data.naam}} aub?</p>
+
+  <div>
+    <p *ngIf="data.rating">
+      {{data.naam}} heeft nu een rating van:
+    </p>
+    <p>
+      <i class="material-icons" *ngFor="let i of [].constructor(data.rating)" >star</i>
+    </p>
+  </div>
+
+  <form [formGroup]="form">
+    <mat-form-field>
+
+      <mat-select placeholder="Selecteer een rating"  formControlName="rating"
+                  (closed)="closeRatingDropDown()"  >
+
+        <mat-select-trigger>
+            <i class="material-icons" *ngFor="let i of Arr">star</i>
+        </mat-select-trigger>
+
+        <mat-option *ngFor="let n of [].constructor(numberOfStars); let i = index"  [value]="i+1">
+          <i class="material-icons" *ngFor="let x of [].constructor(i+1)" >star</i>
+        </mat-option>
+
+<!--        <mat-option value=1>-->
+<!--          <i class="material-icons" >star</i>-->
+<!--        </mat-option>-->
+<!--        <mat-option value="2" >-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--        </mat-option>-->
+<!--        <mat-option value="3">-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--        </mat-option>-->
+<!--        <mat-option value="4">-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--        </mat-option>-->
+<!--        <mat-option value="5">-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--          <i class="material-icons">star</i>-->
+<!--        </mat-option>-->
+
+      </mat-select>
+
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button class="mat-raised-button" (click)="closeDialog()">
+    Annuleren
+  </button>
+
+  <button class="mat-raised-button mat-primary" (click)="saveDialog()">
+    Bewaren
+  </button>
+</div>

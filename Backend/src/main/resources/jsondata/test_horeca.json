@@ -1,0 +1,50 @@
+[
+  {
+    "json_featuretype": "Horeca",
+    "Naam": "De Markies",
+    "Formule": "(Zelfst/nvt)",
+    "Straat": "'t Zand",
+    "HuisNr": 5,
+    "Postcode": "8000",
+    "Deelgemeente": "Brugge",
+    "Gemeente": "Brugge",
+    "Branche": "59.210.234-Hotel",
+    "Check_dat": "20090119",
+    "Winkelgebied": "Centrum Brugge",
+    "Subcentrum": "Centrum Brugge",
+    "StrnmEnHuisnr": "'t Zand 5",
+    "Aangemaakt op": "05/07/2016",
+    "json_ogc_wkt_crs": "GEOGCS[\"WGS84 Lat/Longs\",DATUM[\"WGS_1984\",SPHEROID[\"World Geodetic System of 1984, GEM 10C\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]",
+    "json_geometry": {
+      "type": "Point",
+      "coordinates": [
+        3.21801821432411,
+        51.2060502894539
+      ]
+    }
+  },
+  {
+    "json_featuretype": "Horeca",
+    "Naam": "Rica Rokk",
+    "Formule": "(Zelfst/nvt)",
+    "Straat": "'t Zand",
+    "HuisNr": 6,
+    "Postcode": "8000",
+    "Deelgemeente": "Brugge",
+    "Gemeente": "Brugge",
+    "Branche": "59.210.123-Café",
+    "Check_dat": "20090119",
+    "Winkelgebied": "Centrum Brugge",
+    "Subcentrum": "Centrum Brugge",
+    "StrnmEnHuisnr": "'t Zand 6",
+    "Aangemaakt op": "05/07/2016",
+    "json_ogc_wkt_crs": "GEOGCS[\"WGS84 Lat/Longs\",DATUM[\"WGS_1984\",SPHEROID[\"World Geodetic System of 1984, GEM 10C\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]",
+    "json_geometry": {
+      "type": "Point",
+      "coordinates": [
+        3.21808008996403,
+        51.2059350061145
+      ]
+    }
+  }
+]

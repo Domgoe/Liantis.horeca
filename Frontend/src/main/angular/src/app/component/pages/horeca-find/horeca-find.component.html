@@ -1,0 +1,101 @@
+
+<!--Jumbotron with form-->
+<div class="jumbotron">
+  <h1 class="display-4">{{title}}</h1>
+  <hr class="my-4">
+
+  <form >
+<!--    TODO: input with autocomplete-->
+    <div class="form-group">
+      <label>Naam horecazaak</label>
+      <input class="form-control" type="text" placeholder="Naam van de horecazaak" name="name" [(ngModel)]="horeca.naam" >
+    </div>
+    <div class="form-group">
+      <label>Branche</label>
+      <select class="custom-select" [(ngModel)]="horeca.branche" name="branche">
+        <option value="" >-- Kies branche --</option>
+        <option *ngFor="let branche of branches" [value]="branche" >{{branche | slice: 11}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Winkelgebied</label>
+      <select class="custom-select" [(ngModel)]="horeca.winkelgebied" name="winkelgebied">
+        <option value="" >-- Kies winkelgebied --</option>
+        <option *ngFor="let winkelgebied of winkelgebieden" [value]="winkelgebied" >{{winkelgebied}}</option>
+      </select>
+    </div>
+
+    <button class="btn btn-outline-success"
+            (click)="onSubmit()">
+       <span class="ml-1">Zoeken</span>
+    </button>
+
+    <button class="btn btn-outline-danger"
+            (click)="newSearch()">
+      <span class="ml-1">Nieuwe zoekopdracht</span>
+    </button>
+
+  </form>
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="dataSourceEmpty">
+  Er werden geen horeca-zaken gevonden. Geef een <a href="#" (click)="newSearch()" class="alert-link">nieuwe zoekopdracht</a> in.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--Paginator werkt niet when using *ngIf => vandaar gebruik [hidden]-->
+<div class="mat-elevation-z8"  [hidden]="dataSourceEmpty" >
+  <table mat-table [dataSource]="dataSource"  >
+
+    <ng-container matColumnDef="naam">
+      <th mat-header-cell *matHeaderCellDef> Naam </th>
+      <td mat-cell *matCellDef="let element"> {{element.naam}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="straat">
+      <th mat-header-cell *matHeaderCellDef> Adres </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.straat}} {{element.huisNr}} {{element.huisNrToev}}<br />
+        {{element.postcode}} {{element.gemeente}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="branche">
+      <th mat-header-cell *matHeaderCellDef> Branche </th>
+      <td mat-cell *matCellDef="let element"> {{element.branche | slice: 11}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="winkelgebied">
+      <th mat-header-cell *matHeaderCellDef> winkelgebied </th>
+      <td mat-cell *matCellDef="let element"> {{element.winkelgebied}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rating">
+      <th mat-header-cell *matHeaderCellDef> rating </th>
+      <td mat-cell *matCellDef="let element" >
+          <span *ngIf="element.rating > 0" ><i *ngFor="let i of [].constructor(element.rating)" class="material-icons">star</i></span>
+          <span *ngIf="element.rating == 0"> - </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element" >
+        <span><button mat-raised-button color="primary" (click)="openDialog(element)" class="text-white">Geef score</button></span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+</div>
+
+
+
+
+
+

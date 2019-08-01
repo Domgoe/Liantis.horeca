@@ -1,0 +1,32 @@
+<div *ngIf="horecaPage" class="card-actions align-items-center justify-content-end">
+
+  <a [routerLink]=""
+  class="btn btn-outline" [ngClass]="{'disabled': horecaPage.first }"
+  (click)="firstPage()">
+  <mat-icon>first_page</mat-icon>
+  </a>
+  <a [routerLink]=""
+     class="btn btn-outline" [ngClass]="{'disabled': horecaPage.first }"
+     (click)="previousPage()">
+    <mat-icon>chevron_left</mat-icon>
+  </a>
+
+  <span class="align-self-center mb-1 mr-2 text-muted">
+    Pagina: {{horecaPage.pageable.pageNumber + 1}} van de {{horecaPage.totalPages}}
+  </span>
+
+  <a [routerLink]=""
+     class="btn btn-outline" [ngClass]="{'disabled': horecaPage.last }"
+     (click)="nextPage()">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </a>
+    <a [routerLink]=""
+       class="btn btn-outline" [ngClass]="{'disabled': horecaPage.last }"
+       (click)="lastPage()">
+      <mat-icon>last_page</mat-icon>
+    </a>
+</div>
+
+
+
+

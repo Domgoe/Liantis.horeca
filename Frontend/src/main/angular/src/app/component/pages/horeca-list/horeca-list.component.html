@@ -1,0 +1,35 @@
+<div class="card text-white bg-info" >
+  <div class="card-body">
+    <h2 class="card-title">{{title}}</h2>
+  </div>
+</div>
+
+<div class="row horecalist">
+
+  <div class="col-sm-4" *ngFor="let horecaunit of horecaPage.content">
+    <div class="card">
+      <h5 class="card-header">{{horecaunit.naam}}</h5>
+      <div class="card-body">
+        <div>
+          <p class="font-italic">
+            {{horecaunit.straat}} {{horecaunit.huisNr}} {{horecaunit.huisNrToev}} <br />
+            {{horecaunit.postcode}} {{horecaunit.gemeente}}<br />
+            <small>({{horecaunit.winkelgebied}})</small>
+          </p>
+          <p>
+            <span class="font-weight-bold">Branche: </span><span>{{horecaunit.branche | slice: 11}}</span>
+          </p>
+        </div>
+        <button class="btn btn-outline-success" >Geef rating</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-pagination
+  [horecaPage]="horecaPage"
+  (nextPageEvent)="getNextPage()"
+  (previousPageEvent)="getPreviousPage()"
+  (firstPageEvent)="getFirstPage()"
+  (lastPageEvent)="getLastPage()">
+</app-pagination>
