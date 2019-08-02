@@ -92,8 +92,25 @@ public class HorecaServiceImpl implements HorecaService {
     }
 
     @Override
-    public Page<Horeca> getHorecaPage(Pageable pageable) {
-        return this.horecaRepository.findAll(pageable);
+    public Page<Horeca> getHorecaPage(Pageable pageable, String naam, String branche, String winkelgebied) {
+        //Zoeken op Naam containing (ook lege string), branche en winkelgebied
+        if (!StringHelper.isNullOrEmpty(branche) && !StringHelper.isNullOrEmpty(winkelgebied)) {
+            return this.horecaRepository.findByNaamContainingAndBrancheAndWinkelgebiedAllIgnoreCase(pageable, naam, branche, winkelgebied);
+        }
+        //Zoeken op Naam containing (ook lege string) en branche
+        else if (!StringHelper.isNullOrEmpty(branche) && StringHelper.isNullOrEmpty(winkelgebied)){
+            return this.horecaRepository.findByNaamContainingAndBrancheAllIgnoreCase(pageable, naam, branche);
+        }
+        //Zoeken op Naam containing (ook lege string) en winkelgebied
+        else if(StringHelper.isNullOrEmpty(branche) && !StringHelper.isNullOrEmpty(winkelgebied)) {
+            return this.horecaRepository.findByNaamContainingAndWinkelgebiedAllIgnoreCase(pageable, naam, winkelgebied);
+        }
+        //Zoeken op Naam containing (ook lege string)
+        else {
+            return this.horecaRepository.findByNaamContainingAllIgnoreCase(pageable, naam);
+        }
+
+
     }
 
 }

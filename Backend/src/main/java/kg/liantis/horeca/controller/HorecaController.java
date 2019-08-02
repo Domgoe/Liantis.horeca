@@ -45,8 +45,9 @@ public class HorecaController {
         return this.horecaService.getWinkelgebieden();
     }
 
-    @GetMapping("/get")
-    public Page<Horeca> getHorecaPage(Pageable pageable) {
-        return this.horecaService.getHorecaPage(pageable);
+    @GetMapping("/getPage")
+    public Page<Horeca> getHorecaPage(Pageable pageable,
+                                      @RequestParam String naam, @RequestParam String branche, @RequestParam String winkelgebied) {
+        return this.horecaService.getHorecaPage(pageable, naam, branche, winkelgebied);
     }
 }

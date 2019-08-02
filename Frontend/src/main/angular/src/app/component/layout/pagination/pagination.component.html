@@ -12,8 +12,10 @@
   </a>
 
   <span class="align-self-center mb-1 mr-2 text-muted">
-    Pagina: {{horecaPage.pageable.pageNumber + 1}} van de {{horecaPage.totalPages}}
+    Pagina: {{horecaPage.pageable.pageNumber + 1}} van de {{horecaPage.totalPages}} -
+    Toon: {{horecaPage.pageable.offset+1}} van de {{horecaPage.pageable.offset+horecaPage.pageable.pageSize}}
   </span>
+
 
   <a [routerLink]=""
      class="btn btn-outline" [ngClass]="{'disabled': horecaPage.last }"

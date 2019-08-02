@@ -1,6 +1,6 @@
 export class Pageable {
 
-  static readonly DEFAULT_PAGE_SIZE = 15;
+  static readonly DEFAULT_PAGE_SIZE = 10;
   static readonly FIRST_PAGE_NUMBER = 0;
 
   pageSize: number;

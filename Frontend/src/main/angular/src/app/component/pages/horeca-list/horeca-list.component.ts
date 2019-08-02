@@ -3,6 +3,7 @@ import {Horeca} from "../../../model/Horeca";
 import {HorecaService} from "../../../service/horeca.service";
 import {HorecaPage} from "../../../model/HorecaPage";
 import {PaginationService} from "../../../service/pagination.service";
+import {MatTableDataSource} from "@angular/material";
 
 @Component({
   selector: 'app-horeca-list',
@@ -10,32 +11,66 @@ import {PaginationService} from "../../../service/pagination.service";
   styleUrls: ['./horeca-list.component.css']
 })
 export class HorecaListComponent implements OnInit {
-  horecalist: Horeca[];
+  horeca: Horeca;
+  branches: string[];
+  winkelgebieden: string[];
   horecaPage: HorecaPage = new HorecaPage();
 
-  title: String = "Alle horeca zaken in Brugge";
+  title: String = "Horeca in Brugge";
 
   constructor(private horecaService: HorecaService, private paginationService: PaginationService) { }
 
   ngOnInit() {
-    //this.getHorecaList();
+    this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null);
     this.getHorecaPage();
+    this.getBranches();
+    this.getWinkelgebieden();
   }
 
-  //Alle horecazaken
-  private getHorecaList(): void {
-    this.horecaService.getAll().subscribe(
+  newSearch() {
+    this.ngOnInit();
+  }
+
+  private onSubmit(): void {
+    this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca).subscribe(
       data => {
-        this.horecalist = data;
+        this.horecaPage = data
+      },
+      error =>{
+        throw error;
       }
     )
   }
 
   //Pagina horecazaken
   private getHorecaPage(): void {
-    this.horecaService.getHorecaPage(this.horecaPage.pageable).subscribe(
+    this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca).subscribe(
       data => {
         this.horecaPage = data
+      }
+    )
+  }
+
+  //Get branches for dropdown
+  private getBranches(): void {
+    this.horecaService.getAllBranches().subscribe(
+      data => {
+        this.branches = data.sort();
+      },
+      error => {
+        throw error;
+      }
+    )
+  }
+
+  //Get winkelgebieden for dropdown
+  private getWinkelgebieden() : void {
+    this.horecaService.getAllWinkelgebieden().subscribe(
+      data => {
+        this.winkelgebieden = data.sort();
+      },
+      error => {
+        throw error;
       }
     )
   }

@@ -24,9 +24,15 @@ export class HorecaService {
     return this.httpClient.get<Horeca[]>(this.horecaUrl + '/all', httpOptions);
   }
 
-  public getHorecaPage(pageable: Pageable): Observable<HorecaPage> {
-    let url = this.horecaUrl + "/get?page=" + pageable.pageNumber + "&size=" + pageable.pageSize;
-    return this.httpClient.get<HorecaPage>(url, httpOptions)
+  public getHorecaPage(pageable: Pageable, horeca: Horeca): Observable<HorecaPage> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let params = new HttpParams()
+      .set('naam', horeca.naam)
+      .set('branche', horeca.branche)
+      .set('winkelgebied', horeca.winkelgebied);
+
+    let url = this.horecaUrl + "/getPage?page=" + pageable.pageNumber + "&size=" + pageable.pageSize;
+    return this.httpClient.get<HorecaPage>(url, {headers: headers, params: params});
   }
 
   public getAllBy(horeca: Horeca): Observable<Horeca[]> {

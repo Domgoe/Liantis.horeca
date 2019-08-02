@@ -21,6 +21,6 @@ public interface HorecaService {
 
     Set<String> getWinkelgebieden();
 
-    Page<Horeca> getHorecaPage(Pageable pageable);
+    Page<Horeca> getHorecaPage(Pageable pageable, String naam, String branche, String winkelgebied);
 
 }
