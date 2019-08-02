@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {error} from "util";
+
 
 @Component({
   selector: 'app-header',
@@ -10,6 +12,10 @@ export class HeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  createError() {
+      throw new Error("Error vanuit de headercomponent");
   }
 
 }

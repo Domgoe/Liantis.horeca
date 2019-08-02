@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Horeca} from "../model/Horeca";
 import {HorecaPage} from "../model/HorecaPage";
@@ -30,7 +30,12 @@ export class HorecaService {
   }
 
   public getAllBy(horeca: Horeca): Observable<Horeca[]> {
-    return this.httpClient.post<Horeca[]>(this.horecaUrl + '/find/', horeca, httpOptions);
+    let params =new HttpParams()
+      .set('naam', horeca.naam)
+      .set('branche', horeca.branche)
+      .set('winkelgebied', horeca.winkelgebied);
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient.get<Horeca[]>(this.horecaUrl + '/getBy/', {headers: headers, params: params} );
   }
 
   public getAllBranches() : Observable<string[]> {
@@ -41,9 +46,13 @@ export class HorecaService {
     return this.httpClient.get<string[]>(this.horecaUrl + '/winkelgebieden', httpOptions);
   }
 
-  public saveAndUpdateRating(horeca: Horeca): Observable<Horeca> {
+  public saveRating(horeca: Horeca): Observable<Horeca> {
      // console.log("In the service");
      // console.log(horeca);
-     return this.httpClient.post<Horeca>(this.horecaUrl + "/saveRating", horeca, httpOptions);
+     let params =new HttpParams()
+      .set('id', horeca.id.toString())
+      .set('rating', horeca.rating.toString())
+     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+     return this.httpClient.put<Horeca>(this.horecaUrl + "/saveRating/" + horeca.id, null, {headers: headers, params: params} );
   }
 }

@@ -53,7 +53,7 @@ export class HorecaFindComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       data =>{
         horeca.rating = +data.rating;
-        this.horecaService.saveAndUpdateRating(horeca).subscribe(
+        this.horecaService.saveRating(horeca).subscribe(
           // data => console.log(data),
           // error => console.log(error)
         );
@@ -67,6 +67,9 @@ export class HorecaFindComponent implements OnInit {
       data => {
         this.dataSource = new MatTableDataSource<Horeca>(data);
         this.dataSource.paginator = this.paginator;
+      },
+        error => {
+        throw error;
       }
     )
   }
@@ -78,6 +81,9 @@ export class HorecaFindComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Horeca>(data);
         this.dataSource.paginator = this.paginator;
         this.dataSourceEmpty = this.dataSource.data.length === 0 ? true : false;
+      },
+      error =>{
+        throw error;
       }
     )
   }
@@ -87,6 +93,9 @@ export class HorecaFindComponent implements OnInit {
     this.horecaService.getAllBranches().subscribe(
       data => {
         this.branches = data.sort();
+      },
+      error => {
+        throw error;
       }
     )
   }
@@ -96,6 +105,9 @@ export class HorecaFindComponent implements OnInit {
     this.horecaService.getAllWinkelgebieden().subscribe(
       data => {
         this.winkelgebieden = data.sort();
+      },
+      error => {
+        throw error;
       }
     )
   }

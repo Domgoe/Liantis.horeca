@@ -4,7 +4,6 @@ import kg.liantis.horeca.domain.Horeca;
 import kg.liantis.horeca.repository.HorecaRepository;
 import kg.liantis.horeca.util.StringHelper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -31,18 +30,21 @@ public class HorecaServiceImpl implements HorecaService {
     }
 
     @Override
-    public Horeca saveRating(Horeca horeca) {
-        Optional<Horeca> horecaOptional = this.horecaRepository.findById(horeca.getId());
+    public Horeca saveRating(Long id, int rating) throws Exception {
+        Optional<Horeca> horecaOptional = this.horecaRepository.findById(id);
 
         if (!horecaOptional.isPresent())
             throw new EntityNotFoundException("Horeca-zaak niet gevonden");
         else
         {
             Horeca h = horecaOptional.get();
-            h.setRating(horeca.getRating());
-            return this.horecaRepository.save(h);
+            if (rating >= 0 && rating < 6) {
+                h.setRating(rating);
+                return this.horecaRepository.save(h);
+            } else {
+                throw new Exception("De rating moet zich tussen 0 en 5 bevinden");
+            }
         }
-
     }
 
     @Override

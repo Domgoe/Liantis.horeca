@@ -11,7 +11,7 @@ public interface HorecaService {
 
     List<Horeca> findAll();
 
-    Horeca saveRating(Horeca horeca);
+    Horeca saveRating(Long id, int rating) throws Exception;
 
     Horeca save(Horeca horeca) throws Exception;
 

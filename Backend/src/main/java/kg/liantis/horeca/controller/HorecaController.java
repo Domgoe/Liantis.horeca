@@ -24,15 +24,15 @@ public class HorecaController {
         return this.horecaService.findAll();
     }
 
-    @PostMapping({"/find"})
-    public List<Horeca> findAllBy(@RequestBody Horeca horeca) throws Exception {
-        List<Horeca> result = this.horecaService.findAllByCriteria(horeca.getNaam(), horeca.getBranche(), horeca.getWinkelgebied());
+    @GetMapping({"/getBy"})
+    public List<Horeca> getAllBy(@RequestParam String naam, @RequestParam String branche, @RequestParam String winkelgebied) throws Exception {
+        List<Horeca> result = this.horecaService.findAllByCriteria(naam, branche, winkelgebied);
         return result;
     }
 
-    @PostMapping({"/saveRating"})
-    public Horeca saveRating(@RequestBody Horeca horeca) {
-        return this.horecaService.saveRating(horeca);
+    @PutMapping({"/saveRating/{id}"})
+    public Horeca saveRating(@RequestParam String rating, @RequestParam String id) throws Exception {
+        return this.horecaService.saveRating(Long.valueOf(id), Integer.valueOf(rating));
     }
 
     @GetMapping("/branches")

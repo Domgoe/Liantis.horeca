@@ -3,13 +3,18 @@ package kg.liantis.horeca.service;
 import kg.liantis.horeca.domain.Horeca;
 import kg.liantis.horeca.repository.HorecaRepository;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -19,6 +24,9 @@ public class HorecaServiceImplTest {
 
     @Mock
     HorecaRepository horecaRepository;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private List<Horeca> horecaList;
     private Horeca h1;
@@ -37,18 +45,21 @@ public class HorecaServiceImplTest {
         this.h1.setNaam("Hotel Liantis");
         this.h1.setBranche("Branche1");
         this.h1.setWinkelgebied("wgebied2");
+        this.h1.setRating(0);
 
         this.h2 = new Horeca();
         this.h2.setId(2L);
         this.h2.setNaam("Café Liantis");
         this.h2.setBranche("Branche2");
         this.h2.setWinkelgebied("wgebied1");
+        this.h2.setRating(0);
 
         this.h3 = new Horeca();
         this.h3.setId(3L);
         this.h3.setNaam("Restaurant Liantis");
         this.h3.setBranche("Branche2");
         this.h3.setWinkelgebied("wgebied1");
+        this.h3.setRating(2);
 
         horecaList.add(h1);
         horecaList.add(h2);
@@ -56,7 +67,7 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void findAll() {
+    public void findAll_OK() {
 
         when(this.horecaService.findAll()).thenReturn(horecaList);
 
@@ -67,19 +78,45 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void saveRating() {
+    public void saveRating_OK() throws Exception {
+        //h3 starts with a rating of 2
         when(this.horecaRepository.findById(anyLong())).thenReturn(Optional.of(h3));
 
-        when(this.horecaService.saveRating(h3)).thenReturn(h3);
+        when(this.horecaService.saveRating(anyLong(), 4)).thenReturn(h3);
 
-        this.h3.setRating(4);
+        Horeca savedHoreca =  this.horecaService.saveRating(h3.getId(), 4);
 
-        Horeca savedHoreca =  this.horecaService.saveRating(h3);
         assertEquals(4, savedHoreca.getRating());
     }
 
     @Test
-    public void save() throws Exception {
+    public void saveRating_LargerThen5() throws Exception {
+
+        thrown.expect(Exception.class);
+        thrown.expectMessage(is("De rating moet zich tussen 0 en 5 bevinden"));
+
+        when(this.horecaRepository.findById(anyLong())).thenReturn(Optional.of(h3));
+
+        when(this.horecaService.saveRating(anyLong(), 6)).thenReturn(h3);
+
+        Horeca savedHoreca =  this.horecaService.saveRating(h3.getId(), 6);
+    }
+
+    @Test
+    public void saveRating_Lessthen0() throws Exception {
+
+        thrown.expect(Exception.class);
+        thrown.expectMessage(is("De rating moet zich tussen 0 en 5 bevinden"));
+
+        when(this.horecaRepository.findById(anyLong())).thenReturn(Optional.of(h3));
+
+        when(this.horecaService.saveRating(anyLong(), -1)).thenReturn(h3);
+
+        Horeca savedHoreca =  this.horecaService.saveRating(h3.getId(), -1);
+    }
+
+    @Test
+    public void save_OK() throws Exception {
         Horeca newHoreca = new Horeca();
         newHoreca.setId(4L);
 
@@ -110,7 +147,7 @@ public class HorecaServiceImplTest {
      *     someMethod(anyObject(), eq("String by matcher"));
      */
     @Test
-    public void findAllByCriteria() throws Exception {
+    public void findAllByCriteria_OK() throws Exception {
 
         when(this.horecaService.findAll()).thenReturn(this.horecaList);
 
@@ -126,7 +163,7 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void getBranches() {
+    public void getBranches_OK() {
         when(this.horecaService.findAll()).thenReturn(this.horecaList);
 
         Set<String> testBranches = this.horecaService.getBranches();
@@ -136,7 +173,7 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void getWinkelgebieden() {
+    public void getWinkelgebieden_OK() {
         when(this.horecaService.findAll()).thenReturn(this.horecaList);
 
         Set<String> testWinkelgebieden = this.horecaService.getWinkelgebieden();
