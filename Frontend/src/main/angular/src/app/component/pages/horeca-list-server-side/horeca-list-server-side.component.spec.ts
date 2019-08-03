@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HorecaListComponent } from './horeca-list.component';
+import { HorecaListServerSideComponent } from './horeca-list-server-side.component';
 
 describe('HorecaListComponent', () => {
-  let component: HorecaListComponent;
-  let fixture: ComponentFixture<HorecaListComponent>;
+  let component: HorecaListServerSideComponent;
+  let fixture: ComponentFixture<HorecaListServerSideComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HorecaListComponent ]
+      declarations: [ HorecaListServerSideComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HorecaListComponent);
+    fixture = TestBed.createComponent(HorecaListServerSideComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

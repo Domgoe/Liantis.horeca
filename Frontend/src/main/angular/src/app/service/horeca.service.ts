@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../environments/environment";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Horeca} from "../model/Horeca";
-import {HorecaPage} from "../model/HorecaPage";
-import {Pageable} from "../model/Pageable";
+import { environment} from "../../environments/environment";
+import { HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import { Observable} from "rxjs";
+import { Horeca} from "../model/Horeca";
+import { HorecaPage} from "../model/HorecaPage";
+import { Pageable} from "../model/Pageable";
+import { BehaviorSubject } from 'rxjs';
 
 const API_URL = environment.apiUrl;
 const httpOptions = {

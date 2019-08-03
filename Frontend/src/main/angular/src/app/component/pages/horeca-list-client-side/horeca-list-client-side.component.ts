@@ -1,18 +1,17 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Horeca} from "../../../model/Horeca";
 import { HorecaService} from "../../../service/horeca.service";
 import { MatTableDataSource} from '@angular/material/table';
-import {MatDialogConfig, MatPaginator} from "@angular/material";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {error} from "util";
+import { MatDialogConfig, MatPaginator} from "@angular/material";
+import { MatDialog } from '@angular/material/dialog';
+import { RatingDialogComponent} from "../../layout/ratingdialog/rating-dialog";
 
 @Component({
   selector: 'app-horeca-find',
-  templateUrl: './horeca-find.component.html',
-  styleUrls: ['./horeca-find.component.css']
+  templateUrl: './horeca-list-client-side.component.html',
+  styleUrls: ['./horeca-list-client-side.component.css']
 })
-export class HorecaFindComponent implements OnInit {
+export class HorecaListClientSideComponent implements OnInit {
 
   title: String = "Horeca in Brugge";
   branches: string[];
@@ -52,11 +51,13 @@ export class HorecaFindComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       data =>{
-        horeca.rating = +data.rating;
-        this.horecaService.saveRating(horeca).subscribe(
-          // data => console.log(data),
-          // error => console.log(error)
-        );
+        if (data != null) {
+          horeca.rating = +data.rating;
+          this.horecaService.saveRating(horeca).subscribe(
+            // data => console.log(data),
+            // error => console.log(error)
+          );
+        }
       }
     )
   }
@@ -113,47 +114,6 @@ export class HorecaFindComponent implements OnInit {
   }
 }
 
-//Modal dialog for updating rating
-@Component({
-  selector: 'rating-dialog',
-  templateUrl: 'rating-dialog.html',
-})
-export class RatingDialogComponent implements OnInit{
 
-  form: FormGroup;
-  Arr: Array<number>;
-  selectedRating: number;
-  numberOfStars: number = 5;
-
-  constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<RatingDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Horeca) {
-    this.form = fb.group({
-      rating: [data.rating]
-    });
-  }
-
-  ngOnInit(): void {
-    /**TODO: BUG => reeds toekende sterren van horeca-zaak tonen bij het openen van de Opendialog box.
-     * Voorlopige oplossing: reeds toegekende sterren getoond in aparte paragraaf
-     */
-    this.form.get('rating').setValue(this.form.value);
-  }
-
-  closeRatingDropDown() {
-    this.selectedRating = +this.form.value["rating"];
-    this.Arr = Array(this.selectedRating);
-  }
-
-  closeDialog() {
-    this.dialogRef.close();
-  }
-
-  saveDialog(){
-    this.dialogRef.close(this.form.value);
-  }
-
-}
 
 

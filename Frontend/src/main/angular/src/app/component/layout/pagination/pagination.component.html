@@ -12,8 +12,11 @@
   </a>
 
   <span class="align-self-center mb-1 mr-2 text-muted">
-    Pagina: {{horecaPage.pageable.pageNumber + 1}} van de {{horecaPage.totalPages}} -
-    Toon: {{horecaPage.pageable.offset+1}} van de {{horecaPage.pageable.offset+horecaPage.pageable.pageSize}}
+    Pagina: {{horecaPage.pageable.pageNumber + 1}} van de {{horecaPage.totalPages}} |
+    <span *ngIf="!horecaPage.last; else showlastPage">Toon: {{horecaPage.pageable.offset+1}} van de {{horecaPage.pageable.offset+horecaPage.pageable.pageSize}} horecazaken</span>
+      <ng-template #showlastPage>
+        <span>Toon: {{horecaPage.pageable.offset+1}} van de {{horecaPage.totalElements}} horecazaken</span>
+      </ng-template>
   </span>
 
 

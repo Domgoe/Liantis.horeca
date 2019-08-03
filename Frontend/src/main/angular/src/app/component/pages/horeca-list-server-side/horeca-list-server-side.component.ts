@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import {Horeca} from "../../../model/Horeca";
-import {HorecaService} from "../../../service/horeca.service";
-import {HorecaPage} from "../../../model/HorecaPage";
-import {PaginationService} from "../../../service/pagination.service";
-import {MatTableDataSource} from "@angular/material";
+import {Component, OnInit} from '@angular/core';
+import { Horeca} from "../../../model/Horeca";
+import { HorecaService} from "../../../service/horeca.service";
+import { HorecaPage} from "../../../model/HorecaPage";
+import { PaginationService} from "../../../service/pagination.service";
+import { MatDialog, MatDialogConfig} from "@angular/material";
+import { RatingDialogComponent} from "../../layout/ratingdialog/rating-dialog";
 
 @Component({
   selector: 'app-horeca-list',
-  templateUrl: './horeca-list.component.html',
-  styleUrls: ['./horeca-list.component.css']
+  templateUrl: './horeca-list-server-side.component.html',
+  styleUrls: ['./horeca-list-server-side.component.css']
 })
-export class HorecaListComponent implements OnInit {
+export class HorecaListServerSideComponent implements OnInit {
   horeca: Horeca;
   branches: string[];
   winkelgebieden: string[];
@@ -18,10 +19,13 @@ export class HorecaListComponent implements OnInit {
 
   title: String = "Horeca in Brugge";
 
-  constructor(private horecaService: HorecaService, private paginationService: PaginationService) { }
+  constructor(private horecaService: HorecaService,
+              private paginationService: PaginationService,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null);
+    this.horecaPage.pageable .pageNumber = 0;
     this.getHorecaPage();
     this.getBranches();
     this.getWinkelgebieden();
@@ -32,6 +36,7 @@ export class HorecaListComponent implements OnInit {
   }
 
   private onSubmit(): void {
+    this.horecaPage.pageable.pageNumber = 0;
     this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca).subscribe(
       data => {
         this.horecaPage = data
@@ -47,6 +52,9 @@ export class HorecaListComponent implements OnInit {
     this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca).subscribe(
       data => {
         this.horecaPage = data
+      },
+      error => {
+        throw error;
       }
     )
   }
@@ -93,6 +101,31 @@ export class HorecaListComponent implements OnInit {
   public getLastPage(): void {
     this.horecaPage.pageable = this.paginationService.getLastPage(this.horecaPage);
     this.getHorecaPage();
+  }
+
+  //open dialog for rating horecazaak
+  public openDialog(horeca: Horeca): void {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '400px';
+    dialogConfig.data = horeca;
+
+    const dialogRef = this.dialog.open(RatingDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data =>{
+        if (data != null) {
+          horeca.rating = +data.rating;
+          this.horecaService.saveRating(horeca).subscribe(
+            // data => console.log(data),
+            // error => console.log(error)
+          );
+        }
+
+      }
+    )
   }
 
 }

@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule} from '@angular/core';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './component/layout/header/header.component';
 import { FooterComponent } from './component/layout/footer/footer.component';
-import { HorecaListComponent } from './component/pages/horeca-list/horeca-list.component';
-import { HorecaFindComponent, RatingDialogComponent } from './component/pages/horeca-find/horeca-find.component';
+import { HorecaListServerSideComponent } from './component/pages/horeca-list-server-side/horeca-list-server-side.component';
+import { HorecaListClientSideComponent } from './component/pages/horeca-list-client-side/horeca-list-client-side.component';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PaginationComponent } from './component/layout/pagination/pagination.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,7 +19,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule, MatSelectModule} from "@angular/material";
 import { GlobalErrorHandlerService} from "./service/global-error-handler.service";
 import { ErrorComponent } from './component/pages/error/error.component';
-import {GlobalHttpinterceptorService} from "./service/global-httpinterceptor.service";
+import { GlobalHttpinterceptorService} from "./service/global-httpinterceptor.service";
+import { RatingDialogComponent} from "./component/layout/ratingdialog/rating-dialog";
 
 
 @NgModule({
@@ -27,8 +28,8 @@ import {GlobalHttpinterceptorService} from "./service/global-httpinterceptor.ser
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    HorecaListComponent,
-    HorecaFindComponent,
+    HorecaListServerSideComponent,
+    HorecaListClientSideComponent,
     PaginationComponent,
     RatingDialogComponent,
     ErrorComponent

@@ -52,6 +52,7 @@ public class HorecaServiceImpl implements HorecaService {
         return this.horecaRepository.save(horeca);
     }
 
+    //Client-side pagination
     @Override
     public List<Horeca> findAllByCriteria(String naam, String branche, String winkelgebied) throws Exception {
         List<Horeca> result = this.findAll()

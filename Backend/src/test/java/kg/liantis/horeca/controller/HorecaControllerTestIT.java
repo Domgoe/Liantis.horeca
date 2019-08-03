@@ -119,7 +119,7 @@ public class HorecaControllerTestIT {
     }
 
     @Test
-    public void getAllByNaam_NoParam() throws Exception {
+    public void getAllByNaam_NoParam_NOK() throws Exception {
         List<Horeca> testList = new ArrayList<>();
         Horeca horeca = new Horeca();
         horeca.setId(1L);

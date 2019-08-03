@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HorecaFindComponent } from './horeca-find.component';
+import { HorecaListClientSideComponent } from './horeca-list-client-side.component';
 
 describe('HorecaFindComponent', () => {
-  let component: HorecaFindComponent;
-  let fixture: ComponentFixture<HorecaFindComponent>;
+  let component: HorecaListClientSideComponent;
+  let fixture: ComponentFixture<HorecaListClientSideComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HorecaFindComponent ]
+      declarations: [ HorecaListClientSideComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HorecaFindComponent);
+    fixture = TestBed.createComponent(HorecaListClientSideComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,16 +4,16 @@
   </button>
   <div class="container">
     <div class="collapse navbar-collapse" id="navbarToggler">
-      <a class="navbar-brand" href="#">Horeca - Brugge</a>
+      <a class="navbar-brand" (click)="refreshHome()" routerLinkActive="active">Horeca - Brugge</a>
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Client-side paging <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="/horeca" routerLinkActive="active">Client-side paging <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/horeca" routerLinkActive="active" >Server-side paging</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" >Server-side paging</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="createError()" >Error pagina</a>
+          <a class="nav-link" (click)="createError()" routerLinkActive="active" >Error pagina</a>
         </li>
 
       </ul>
