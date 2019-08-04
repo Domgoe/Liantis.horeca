@@ -5,7 +5,7 @@ Opdracht:
     Must have:
 
         1. De JSON dataset inladen en opslaan in een relationele database. 
-        2. Overzicht van alle horecazaken. v
+        2. Overzicht van alle horecazaken.
         3. Mogelijkheid om te zoeken op naam, branche en winkelgebied. 
         
     Should have:

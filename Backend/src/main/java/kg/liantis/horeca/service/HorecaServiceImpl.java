@@ -3,6 +3,8 @@ package kg.liantis.horeca.service;
 import kg.liantis.horeca.domain.Horeca;
 import kg.liantis.horeca.repository.HorecaRepository;
 import kg.liantis.horeca.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class HorecaServiceImpl implements HorecaService {
 
     private HorecaRepository horecaRepository;
+    private static final Logger logger = LoggerFactory.getLogger(HorecaServiceImpl.class);
 
     public HorecaServiceImpl(HorecaRepository horecaRepository) {
         this.horecaRepository = horecaRepository;
@@ -29,6 +32,7 @@ public class HorecaServiceImpl implements HorecaService {
         try {
             return this.horecaRepository.findAll();
         } catch (Exception e) {
+            logger.error(e.getMessage());
             throw e;
         }
     }
@@ -56,6 +60,7 @@ public class HorecaServiceImpl implements HorecaService {
         try {
             return this.horecaRepository.save(horeca);
         } catch (Exception e){
+            logger.error(e.getMessage());
             throw e;
         }
      }
@@ -63,63 +68,84 @@ public class HorecaServiceImpl implements HorecaService {
     //Client-side pagination
     @Override
     public List<Horeca> findAllByCriteria(String naam, String branche, String winkelgebied) throws Exception {
-        List<Horeca> result = this.findAll()
-                                    .stream()
-                                    .filter(horeca -> horeca.getNaam().toLowerCase().contains(naam.toLowerCase()))
-                                    .collect(Collectors.toList());
 
-        if(!StringHelper.isNullOrEmpty(branche))
-            result = result.stream()
-                            .filter(horeca -> branche.toLowerCase().equals(horeca.getBranche().toLowerCase()))
-                            .collect(Collectors.toList());
-        if(!StringHelper.isNullOrEmpty(winkelgebied))
-            result = result.stream()
-                            .filter(horeca -> winkelgebied.toLowerCase().equals(horeca.getWinkelgebied().toLowerCase()))
-                            .collect(Collectors.toList());
+        List<Horeca> result;
+        try {
+            result = this.findAll()
+                          .stream()
+                          .filter(horeca -> horeca.getNaam().toLowerCase().contains(naam.toLowerCase()))
+                          .collect(Collectors.toList());
 
-        return result;
+            if(!StringHelper.isNullOrEmpty(branche))
+                result = result.stream()
+                                .filter(horeca -> branche.toLowerCase().equals(horeca.getBranche().toLowerCase()))
+                                .collect(Collectors.toList());
+            if(!StringHelper.isNullOrEmpty(winkelgebied))
+                result = result.stream()
+                                .filter(horeca -> winkelgebied.toLowerCase().equals(horeca.getWinkelgebied().toLowerCase()))
+                                .collect(Collectors.toList());
+            return result;
 
-     }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw e;
+        }
+    }
 
     @Override
     public Set<String> getBranches() {
-        Set<String> branches = this.horecaRepository.findAll()
-                                        .stream()
-                                        .map(b -> b.getBranche())
-                                        .collect(Collectors.toSet());
+        Set<String> branches = null;
+        try {
+            branches = this.horecaRepository.findAll()
+                                            .stream()
+                                            .map(b -> b.getBranche())
+                                            .collect(Collectors.toSet());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw e;
+        }
         return branches;
     }
 
     @Override
     public Set<String> getWinkelgebieden() {
-        Set<String> winkelgebieden = this.horecaRepository.findAll()
-                                        .stream()
-                                        .map(w -> w.getWinkelgebied())
-                                        .collect(Collectors.toSet());
+        Set<String> winkelgebieden = null;
+        try {
+            winkelgebieden = this.horecaRepository.findAll()
+                                            .stream()
+                                            .map(w -> w.getWinkelgebied())
+                                            .collect(Collectors.toSet());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw e;
+        }
 
         return winkelgebieden;
     }
 
     @Override
     public Page<Horeca> getHorecaPage(Pageable pageable, String naam, String branche, String winkelgebied) {
-        //Zoeken op Naam containing (ook lege string), branche en winkelgebied
-        if (!StringHelper.isNullOrEmpty(branche) && !StringHelper.isNullOrEmpty(winkelgebied)) {
-            return this.horecaRepository.findByNaamContainingAndBrancheAndWinkelgebiedAllIgnoreCase(pageable, naam, branche, winkelgebied);
+        try {
+            //Zoeken op Naam containing (ook lege string), branche en winkelgebied
+            if (!StringHelper.isNullOrEmpty(branche) && !StringHelper.isNullOrEmpty(winkelgebied)) {
+                return this.horecaRepository.findByNaamContainingAndBrancheAndWinkelgebiedAllIgnoreCase(pageable, naam, branche, winkelgebied);
+            }
+            //Zoeken op Naam containing (ook lege string) en branche
+            else if (!StringHelper.isNullOrEmpty(branche) && StringHelper.isNullOrEmpty(winkelgebied)){
+                return this.horecaRepository.findByNaamContainingAndBrancheAllIgnoreCase(pageable, naam, branche);
+            }
+            //Zoeken op Naam containing (ook lege string) en winkelgebied
+            else if(StringHelper.isNullOrEmpty(branche) && !StringHelper.isNullOrEmpty(winkelgebied)) {
+                return this.horecaRepository.findByNaamContainingAndWinkelgebiedAllIgnoreCase(pageable, naam, winkelgebied);
+            }
+            //Zoeken op Naam containing (ook lege string)
+            else {
+                return this.horecaRepository.findByNaamContainingAllIgnoreCase(pageable, naam);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw e;
         }
-        //Zoeken op Naam containing (ook lege string) en branche
-        else if (!StringHelper.isNullOrEmpty(branche) && StringHelper.isNullOrEmpty(winkelgebied)){
-            return this.horecaRepository.findByNaamContainingAndBrancheAllIgnoreCase(pageable, naam, branche);
-        }
-        //Zoeken op Naam containing (ook lege string) en winkelgebied
-        else if(StringHelper.isNullOrEmpty(branche) && !StringHelper.isNullOrEmpty(winkelgebied)) {
-            return this.horecaRepository.findByNaamContainingAndWinkelgebiedAllIgnoreCase(pageable, naam, winkelgebied);
-        }
-        //Zoeken op Naam containing (ook lege string)
-        else {
-            return this.horecaRepository.findByNaamContainingAllIgnoreCase(pageable, naam);
-        }
-
-
     }
 
 }

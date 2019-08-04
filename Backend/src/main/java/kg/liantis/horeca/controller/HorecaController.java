@@ -22,33 +22,57 @@ public class HorecaController {
 
     @GetMapping({"","/all"})
     public List<Horeca> getAll() {
-        return this.horecaService.findAll();
+        try {
+            return this.horecaService.findAll();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @GetMapping({"/getBy"})
     public List<Horeca> getAllBy(@RequestParam String naam, @RequestParam String branche, @RequestParam String winkelgebied) throws Exception {
-        List<Horeca> result = this.horecaService.findAllByCriteria(naam, branche, winkelgebied);
-        return result;
+        try {
+            List<Horeca> result = this.horecaService.findAllByCriteria(naam, branche, winkelgebied);
+            return result;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @PutMapping({"/saveRating/{id}"})
     public Horeca saveRating(@RequestParam String rating, @RequestParam String id) throws Exception {
-        return this.horecaService.saveRating(Long.valueOf(id), Integer.valueOf(rating));
+        try {
+            return this.horecaService.saveRating(Long.valueOf(id), Integer.valueOf(rating));
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @GetMapping("/branches")
     public Set<String> getAllBranches() {
-        return this.horecaService.getBranches();
+        try {
+            return this.horecaService.getBranches();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @GetMapping("/winkelgebieden")
     public Set<String> getAllWinkelgebieden() {
-        return this.horecaService.getWinkelgebieden();
+        try {
+            return this.horecaService.getWinkelgebieden();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @GetMapping("/getPage")
     public Page<Horeca> getHorecaPage(Pageable pageable,
                                       @RequestParam String naam, @RequestParam String branche, @RequestParam String winkelgebied) {
-        return this.horecaService.getHorecaPage(pageable, naam, branche, winkelgebied);
+        try {
+            return this.horecaService.getHorecaPage(pageable, naam, branche, winkelgebied);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
