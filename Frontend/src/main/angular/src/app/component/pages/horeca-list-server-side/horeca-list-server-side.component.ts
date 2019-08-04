@@ -24,12 +24,12 @@ export class HorecaListServerSideComponent implements OnInit {
               public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null);
-    this.horecaPage.pageable .pageNumber = 0;
+    this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null, null);
+    this.horecaPage.pageable.pageNumber = 0;
     this.getHorecaPage();
     this.getBranches();
     this.getWinkelgebieden();
-  }
+   }
 
   newSearch() {
     this.ngOnInit();

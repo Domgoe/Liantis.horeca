@@ -11,7 +11,6 @@ public class Geometry {
     private String geoType;
 
     @Embedded
-    @Basic(fetch = FetchType.EAGER)
     private Coordinate coordinates ;
 
     public Geometry() {

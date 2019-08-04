@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment} from "../../environments/environment";
 import { HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import { Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import { Horeca} from "../model/Horeca";
 import { HorecaPage} from "../model/HorecaPage";
 import { Pageable} from "../model/Pageable";
-import { BehaviorSubject } from 'rxjs';
 
 const API_URL = environment.apiUrl;
 const httpOptions = {
@@ -19,11 +18,41 @@ export class HorecaService {
 
   private horecaUrl: string = API_URL + "/horeca";
 
+  horecaResults = new BehaviorSubject<Horeca[]>(null);
+
+  getResults(){
+    return this.horecaResults.asObservable();
+  }
+
   constructor(private httpClient : HttpClient) { }
 
-  public getAll(): Observable<Horeca[]> {
-    return this.httpClient.get<Horeca[]>(this.horecaUrl + '/all', httpOptions);
+  public getAll() {
+     this.httpClient.get<Horeca[]>(this.horecaUrl + '/all', httpOptions).subscribe(
+       data => {
+          this.horecaResults.next(data);
+       }
+     );
   }
+
+  public getAllBy(horeca: Horeca) {
+    let params =new HttpParams()
+      .set('naam', horeca.naam)
+      .set('branche', horeca.branche)
+      .set('winkelgebied', horeca.winkelgebied);
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.httpClient.get<Horeca[]>(this.horecaUrl + '/getBy/', {headers: headers, params: params} ).subscribe(
+      data => {
+        console.log("From horecaservice:" + data);
+        this.horecaResults.next(data);
+       }
+    );
+
+  }
+
+  // public getAll(): Observable<Horeca[]> {
+  //   return this.httpClient.get<Horeca[]>(this.horecaUrl + '/all', httpOptions);
+  // }
 
   public getHorecaPage(pageable: Pageable, horeca: Horeca): Observable<HorecaPage> {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -36,14 +65,14 @@ export class HorecaService {
     return this.httpClient.get<HorecaPage>(url, {headers: headers, params: params});
   }
 
-  public getAllBy(horeca: Horeca): Observable<Horeca[]> {
-    let params =new HttpParams()
-      .set('naam', horeca.naam)
-      .set('branche', horeca.branche)
-      .set('winkelgebied', horeca.winkelgebied);
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.httpClient.get<Horeca[]>(this.horecaUrl + '/getBy/', {headers: headers, params: params} );
-  }
+  // public getAllBy(horeca: Horeca): Observable<Horeca[]> {
+  //   let params =new HttpParams()
+  //     .set('naam', horeca.naam)
+  //     .set('branche', horeca.branche)
+  //     .set('winkelgebied', horeca.winkelgebied);
+  //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   return this.httpClient.get<Horeca[]>(this.horecaUrl + '/getBy/', {headers: headers, params: params} );
+  // }
 
   public getAllBranches() : Observable<string[]> {
     return this.httpClient.get<string[]>(this.horecaUrl + '/branches', httpOptions);

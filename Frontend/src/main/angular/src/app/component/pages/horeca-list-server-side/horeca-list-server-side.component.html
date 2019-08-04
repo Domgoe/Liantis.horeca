@@ -65,7 +65,7 @@
         {{h.postcode}} {{h.gemeente}}
       </td>
       <td>{{h.branche | slice:11}}</td>
-      <td>{{h.winkelgebied}}</td>
+      <td>{{h.winkelgebied}} - {{h.geometry.coordinates.latitude}}</td>
       <td>
         <span *ngIf="h.rating > 0; else ratingZero" ><i *ngFor="let i of [].constructor(h.rating)" class="material-icons">star</i></span>
         <ng-template #ratingZero> - </ng-template>

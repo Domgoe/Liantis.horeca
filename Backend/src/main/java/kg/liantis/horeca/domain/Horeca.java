@@ -50,7 +50,6 @@ public class Horeca {
     private int rating;
 
     @Embedded
-    @Basic(fetch = FetchType.EAGER)
     private Geometry geometry;
 
     public Horeca() {  }

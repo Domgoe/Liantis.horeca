@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Horeca} from "../../../model/Horeca";
 import { HorecaService} from "../../../service/horeca.service";
 import { MatTableDataSource} from '@angular/material/table';
@@ -11,7 +11,7 @@ import { RatingDialogComponent} from "../../layout/ratingdialog/rating-dialog";
   templateUrl: './horeca-list-client-side.component.html',
   styleUrls: ['./horeca-list-client-side.component.css']
 })
-export class HorecaListClientSideComponent implements OnInit {
+export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
 
   title: String = "Horeca in Brugge";
   branches: string[];
@@ -24,18 +24,44 @@ export class HorecaListClientSideComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  constructor(private horecaService: HorecaService, public dialog: MatDialog) { }
+  constructor(private horecaService: HorecaService, public dialog: MatDialog) {
+    this.dataSource = new MatTableDataSource();
+  }
 
   ngOnInit() {
-    this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null);
+    this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null, null);
     this.dataSourceEmpty = false;
-    this.getAll();
+
     this.getBranches();
     this.getWinkelgebieden();
   }
 
+
+  ngAfterContentInit(): void {
+    this.horecaService.getAll();
+    this.horecaService.getResults().subscribe( data => {
+        //console.log(data);
+        this.dataSource = new MatTableDataSource<Horeca>(data);
+        //zonder Timeout => Error: cannot read property 'length' of null
+        setTimeout(() => {this.dataSource.paginator = this.paginator;}, 1000);
+
+      },
+      error => {throw error
+      });
+  }
+
+
   newSearch() {
-    this.ngOnInit();
+    this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null, null);
+    this.dataSourceEmpty = false;
+    this.horecaService.getAll();
+    this.horecaService.getResults().subscribe( data => {
+        this.dataSource = new MatTableDataSource<Horeca>(data);
+        this.dataSource.paginator = this.paginator;
+
+      },
+      error => {throw error
+      });
   }
 
   //open dialog for rating horecazaak
@@ -62,22 +88,25 @@ export class HorecaListClientSideComponent implements OnInit {
     )
   }
 
+  /**Kan niet gebruikt worden met de search - functie in de headercomponent
   //Alle horecazaken
-  private getAll(): void {
-    this.horecaService.getAll().subscribe(
-      data => {
-        this.dataSource = new MatTableDataSource<Horeca>(data);
-        this.dataSource.paginator = this.paginator;
-      },
-        error => {
-        throw error;
-      }
-    )
-  }
+  // private getAll(): void {
+  //   this.horecaService.getAll().subscribe(
+  //     data => {
+  //       this.dataSource = new MatTableDataSource<Horeca>(data);
+  //       this.dataSource.paginator = this.paginator;
+  //     },
+  //       error => {
+  //       throw error;
+  //     }
+  //   )
+  // }
+   **/
 
   //Get by naam, branche en winkelgebied
   private onSubmit(): void {
-    this.horecaService.getAllBy(this.horeca).subscribe(
+    this.horecaService.getAllBy(this.horeca);
+    this.horecaService.getResults().subscribe(
       data => {
         this.dataSource = new MatTableDataSource<Horeca>(data);
         this.dataSource.paginator = this.paginator;

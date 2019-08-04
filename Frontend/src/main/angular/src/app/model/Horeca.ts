@@ -1,3 +1,5 @@
+import {Geometry} from "./Geometry";
+
 export class Horeca {
   constructor(
     public id: number,
@@ -10,6 +12,7 @@ export class Horeca {
     public winkelgebied: string,
     public subcentrum: string,
     public branche: string,
-    public rating: number
+    public rating: number,
+    public geometry: Geometry
   ){}
 }

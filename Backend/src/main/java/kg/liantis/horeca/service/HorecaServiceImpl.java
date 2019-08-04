@@ -26,7 +26,11 @@ public class HorecaServiceImpl implements HorecaService {
 
     @Override
     public List<Horeca> findAll() {
-        return this.horecaRepository.findAll();
+        try {
+            return this.horecaRepository.findAll();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
@@ -49,8 +53,12 @@ public class HorecaServiceImpl implements HorecaService {
 
     @Override
     public Horeca save(Horeca horeca) throws Exception {
-        return this.horecaRepository.save(horeca);
-    }
+        try {
+            return this.horecaRepository.save(horeca);
+        } catch (Exception e){
+            throw e;
+        }
+     }
 
     //Client-side pagination
     @Override

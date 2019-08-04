@@ -4,7 +4,7 @@
   </button>
   <div class="container">
     <div class="collapse navbar-collapse" id="navbarToggler">
-      <a class="navbar-brand" (click)="refreshHome()" routerLinkActive="active">Horeca - Brugge</a>
+      <a class="navbar-brand" routerLink="/" routerLinkActive="active">Horeca - Brugge</a>
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
           <a class="nav-link" routerLink="/horeca" routerLinkActive="active">Client-side paging <span class="sr-only">(current)</span></a>
@@ -18,8 +18,8 @@
 
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Zoek horeca-zaak" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input class="form-control mr-sm-2"  id="naam" name="naam" type="search" placeholder="Zoek horeca-zaak" aria-label="Search" [(ngModel)]="horeca.naam">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="onSubmit()">Zoeken</button>
       </form>
     </div>
   </div>

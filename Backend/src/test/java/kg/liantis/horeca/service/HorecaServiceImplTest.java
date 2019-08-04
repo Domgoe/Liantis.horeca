@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -80,7 +81,7 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void findAll_OK() {
+    public void findAll_OK() throws ExecutionException, InterruptedException {
 
         when(this.horecaService.findAll()).thenReturn(horecaList);
 
@@ -281,7 +282,7 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void getBranches_OK() {
+    public void getBranches_OK() throws ExecutionException, InterruptedException {
         when(this.horecaService.findAll()).thenReturn(this.horecaList);
 
         Set<String> testBranches = this.horecaService.getBranches();
@@ -292,7 +293,7 @@ public class HorecaServiceImplTest {
     }
 
     @Test
-    public void getWinkelgebieden_OK() {
+    public void getWinkelgebieden_OK() throws ExecutionException, InterruptedException {
         when(this.horecaService.findAll()).thenReturn(this.horecaList);
 
         Set<String> testWinkelgebieden = this.horecaService.getWinkelgebieden();
