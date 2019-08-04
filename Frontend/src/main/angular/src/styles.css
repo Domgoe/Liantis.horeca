@@ -1,2 +1,6 @@
 @import '~material-design-icons/iconfont/material-icons.css';
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+div.jumbotron{
+ padding: 32px 32px;
+}

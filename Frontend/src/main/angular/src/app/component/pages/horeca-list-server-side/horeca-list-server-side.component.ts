@@ -31,13 +31,16 @@ export class HorecaListServerSideComponent implements OnInit {
     this.getWinkelgebieden();
    }
 
+  //nieuwe zoekopdracht
   newSearch() {
     this.ngOnInit();
   }
 
+  //zoekopdracht op naam, branche en winkelgebied
   private onSubmit(): void {
     this.horecaPage.pageable.pageNumber = 0;
-    this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca).subscribe(
+    this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca);
+    this.horecaService.getPageResults().subscribe(
       data => {
         this.horecaPage = data
       },
@@ -49,14 +52,15 @@ export class HorecaListServerSideComponent implements OnInit {
 
   //Pagina horecazaken
   private getHorecaPage(): void {
-    this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca).subscribe(
+    this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca)
+    this.horecaService.getPageResults().subscribe(
       data => {
-        this.horecaPage = data
+        this.horecaPage = data;
       },
       error => {
         throw error;
       }
-    )
+    );
   }
 
   //Get branches for dropdown
@@ -123,7 +127,6 @@ export class HorecaListServerSideComponent implements OnInit {
             // error => console.log(error)
           );
         }
-
       }
     )
   }

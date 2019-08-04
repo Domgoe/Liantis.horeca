@@ -6,23 +6,29 @@
 
   <form >
     <!--    TODO: input with autocomplete-->
-    <div class="form-group">
-      <label>Naam horecazaak</label>
-      <input class="form-control" type="text" placeholder="Naam van de horecazaak" name="name" [(ngModel)]="horeca.naam" >
+    <div class="form-group row">
+      <label for="naam" class="col-sm-2 col-form-label d-md-none d-lg-block">Naam horecazaak</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" placeholder="Naam van de horecazaak" name="name" id="naam" [(ngModel)]="horeca.naam" >
+      </div>
     </div>
-    <div class="form-group">
-      <label>Branche</label>
-      <select class="custom-select" [(ngModel)]="horeca.branche" name="branche">
-        <option value="" >-- Kies branche --</option>
-        <option *ngFor="let branche of branches" [value]="branche" >{{branche | slice: 11}}</option>
-      </select>
+    <div class="form-group row">
+      <label for="branche" class="col-sm-2 col-form-label d-md-none d-lg-block">Branche</label>
+      <div class="col-sm-10">
+        <select class="custom-select" [(ngModel)]="horeca.branche" name="branche" id="branche">
+          <option value="" >-- Kies branche --</option>
+          <option *ngFor="let branche of branches" [value]="branche" >{{branche | slice: 11}}</option>
+        </select>
+      </div>
     </div>
-    <div class="form-group">
-      <label>Winkelgebied</label>
-      <select class="custom-select" [(ngModel)]="horeca.winkelgebied" name="winkelgebied">
-        <option value="" >-- Kies winkelgebied --</option>
-        <option *ngFor="let winkelgebied of winkelgebieden" [value]="winkelgebied" >{{winkelgebied}}</option>
-      </select>
+    <div class="form-group row">
+      <label for="winkelgebied" class="col-sm-2 col-form-label d-md-none d-lg-block">Winkelgebied</label>
+      <div class="col-sm-10">
+        <select class="custom-select" [(ngModel)]="horeca.winkelgebied" name="winkelgebied" id="winkelgebied">
+          <option value="" >-- Kies winkelgebied --</option>
+          <option *ngFor="let winkelgebied of winkelgebieden" [value]="winkelgebied" >{{winkelgebied}}</option>
+        </select>
+      </div>
     </div>
 
     <button class="btn btn-outline-success"
@@ -38,52 +44,56 @@
   </form>
 </div>
 
-<div class="alert alert-danger" role="alert" *ngIf="horecaPage.totalElements == 0">
-  Er werden geen horeca-zaken gevonden. Geef een <a href="#" (click)="newSearch()" class="alert-link">nieuwe zoekopdracht</a> in.
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div *ngIf="horecaPage?.content">
+  <div class="alert alert-danger" role="alert" *ngIf="horecaPage.totalElements == 0; else showTable">
+    Er werden geen horeca-zaken gevonden. Geef een <a href="#" (click)="newSearch()" class="alert-link">nieuwe zoekopdracht</a> in.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <ng-template #showTable>
+    <table class="table table-striped"  >
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Naam</th>
+        <th scope="col">Adres</th>
+        <th scope="col">Branche</th>
+        <th scope="col">Winkelgebied</th>
+        <th scope="col">Rating</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let h of horecaPage.content">
+        <td>{{h.naam}}</td>
+        <td>
+          {{h.straat}} {{h.huisNr}} {{h.huisNrToev}} <br />
+          {{h.postcode}} {{h.gemeente}}
+        </td>
+        <td>{{h.branche | slice:11}}</td>
+        <td>{{h.winkelgebied}}</td>
+        <td>
+          <span *ngIf="h.rating > 0; else ratingZero" ><i *ngFor="let i of [].constructor(h.rating)" class="material-icons">star</i></span>
+          <ng-template #ratingZero> - </ng-template>
+        </td>
+        <td>
+          <button mat-raised-button color="primary" class="text-white" (click)="openDialog(h)">Geef score</button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <app-pagination
+      [horecaPage]="horecaPage"
+      (nextPageEvent)="getNextPage()"
+      (previousPageEvent)="getPreviousPage()"
+      (firstPageEvent)="getFirstPage()"
+      (lastPageEvent)="getLastPage()">
+    </app-pagination>
+  </ng-template>
 </div>
 
-<div *ngIf="horecaPage.totalElements > 0">
-  <table class="table table-striped" >
-    <thead class="thead-dark">
-    <tr>
-      <th scope="col">Naam</th>
-      <th scope="col">Adres</th>
-      <th scope="col">Branche</th>
-      <th scope="col">Winkelgebied</th>
-      <th scope="col">Rating</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let h of horecaPage.content">
-      <td>{{h.naam}}</td>
-      <td>
-        {{h.straat}} {{h.huisNr}} {{h.huisNrToev}} <br />
-        {{h.postcode}} {{h.gemeente}}
-      </td>
-      <td>{{h.branche | slice:11}}</td>
-      <td>{{h.winkelgebied}} - {{h.geometry.coordinates.latitude}}</td>
-      <td>
-        <span *ngIf="h.rating > 0; else ratingZero" ><i *ngFor="let i of [].constructor(h.rating)" class="material-icons">star</i></span>
-        <ng-template #ratingZero> - </ng-template>
-      </td>
-      <td>
-        <button mat-raised-button color="primary" class="text-white" (click)="openDialog(h)">Geef score</button>
-      </td>
-    </tr>
 
-    </tbody>
-  </table>
-
-  <app-pagination
-    [horecaPage]="horecaPage"
-    (nextPageEvent)="getNextPage()"
-    (previousPageEvent)="getPreviousPage()"
-    (firstPageEvent)="getFirstPage()"
-    (lastPageEvent)="getLastPage()">
-  </app-pagination>
-</div>
 

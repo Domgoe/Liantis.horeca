@@ -50,7 +50,7 @@ export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
       });
   }
 
-
+  //nieuwe zoekopdracht
   newSearch() {
     this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null, null);
     this.dataSourceEmpty = false;
@@ -58,7 +58,6 @@ export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
     this.horecaService.getResults().subscribe( data => {
         this.dataSource = new MatTableDataSource<Horeca>(data);
         this.dataSource.paginator = this.paginator;
-
       },
       error => {throw error
       });

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HorecaService} from "../../../service/horeca.service";
 import {Horeca} from "../../../model/Horeca";
+import {HorecaPage} from "../../../model/HorecaPage";
 
 @Component({
   selector: 'app-header',
@@ -11,10 +12,14 @@ export class HeaderComponent implements OnInit {
 
   constructor(private horecaService: HorecaService) { }
 
-  horeca: Horeca;
+  private horeca: Horeca;
+  private serverSideActive: boolean;
+  private horecaPage: HorecaPage = new HorecaPage();
 
   ngOnInit() {
     this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null, null);
+    this.serverSideActive = true;
+    this.horecaPage = new HorecaPage();
   }
 
   createError() {
@@ -22,9 +27,22 @@ export class HeaderComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("From the header:" + this.horeca);
-    this.horecaService.getAllBy(this.horeca);
-    this.horeca.naam = null;
+    if (this.serverSideActive) {
+      this.horecaService.getHorecaPage(this.horecaPage.pageable, this.horeca);
+    } else {
+      this.horecaService.getAllBy(this.horeca);
+    }
+
+    this.horeca.naam = "";
   }
+
+  changeServerSideToInactive(){
+    this.serverSideActive = false;
+  }
+
+  changeServerSideToActive() {
+    this.serverSideActive = true;
+  }
+
 
 }

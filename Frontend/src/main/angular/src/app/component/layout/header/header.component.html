@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" >
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -7,19 +7,19 @@
       <a class="navbar-brand" routerLink="/" routerLinkActive="active">Horeca - Brugge</a>
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/horeca" routerLinkActive="active">Client-side paging <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="/horeca" routerLinkActive="active" (click)="changeServerSideToInactive()">Client-side paging <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active" >Server-side paging</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" (click)="changeServerSideToActive()" >Server-side paging</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" (click)="createError()" routerLinkActive="active" >Error pagina</a>
         </li>
 
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2"  id="naam" name="naam" type="search" placeholder="Zoek horeca-zaak" aria-label="Search" [(ngModel)]="horeca.naam">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="onSubmit()">Zoeken</button>
+      <form class="form-inline my-2 my-lg-0 d-md-none d-lg-block">
+        <input class="form-control mr-sm-2"  id="naam" name="naam" type="search" placeholder="Zoek horeca-zaak op naam" aria-label="Search" [(ngModel)]="horeca.naam" >
+        <button class="btn btn-success my-2 my-sm-0" type="submit" (click)="onSubmit()">Zoeken</button>
       </form>
     </div>
   </div>
