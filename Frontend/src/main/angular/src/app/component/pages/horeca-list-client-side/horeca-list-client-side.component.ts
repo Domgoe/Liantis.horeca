@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Horeca} from "../../../model/Horeca";
 import { HorecaService} from "../../../service/horeca.service";
 import { MatTableDataSource} from '@angular/material/table';
@@ -22,6 +22,8 @@ export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
   dataSource: MatTableDataSource<Horeca>;
   dataSourceEmpty: boolean = false;
 
+  showLoader: boolean;
+
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private horecaService: HorecaService, public dialog: MatDialog) {
@@ -31,7 +33,7 @@ export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
   ngOnInit() {
     this.horeca = new Horeca(0,"", "", null, "", "", "", "", "", "", null, null);
     this.dataSourceEmpty = false;
-
+    this.showLoader = true;
     this.getBranches();
     this.getWinkelgebieden();
   }
@@ -43,7 +45,10 @@ export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
         //console.log(data);
         this.dataSource = new MatTableDataSource<Horeca>(data);
         //zonder Timeout => Error: cannot read property 'length' of null
-        setTimeout(() => {this.dataSource.paginator = this.paginator;}, 1000);
+        setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+          this.showLoader = false},
+          1000);
 
       },
       error => {throw error

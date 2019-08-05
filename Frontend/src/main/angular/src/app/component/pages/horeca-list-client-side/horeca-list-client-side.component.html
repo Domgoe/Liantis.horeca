@@ -52,6 +52,8 @@
   </button>
 </div>
 
+<div *ngIf="showLoader">Loading ...</div>
+
 <!--Paginator werkt niet when using *ngIf => vandaar gebruik [hidden]-->
 <div class="mat-elevation-z8"  [hidden]="dataSourceEmpty" >
   <table mat-table [dataSource]="dataSource"  >
