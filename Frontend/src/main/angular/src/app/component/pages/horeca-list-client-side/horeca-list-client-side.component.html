@@ -52,7 +52,14 @@
   </button>
 </div>
 
-<div *ngIf="showLoader">Loading ...</div>
+<div *ngIf="showLoader">
+  <mat-progress-bar
+    [color]="color"
+    [mode]="mode"
+    [value]="value"
+    [bufferValue]="bufferValue">
+  </mat-progress-bar>
+</div>
 
 <!--Paginator werkt niet when using *ngIf => vandaar gebruik [hidden]-->
 <div class="mat-elevation-z8"  [hidden]="dataSourceEmpty" >

@@ -23,6 +23,10 @@ export class HorecaListClientSideComponent implements OnInit, AfterContentInit {
   dataSourceEmpty: boolean = false;
 
   showLoader: boolean;
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 100;
+  bufferValue = 0;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 

@@ -21,6 +21,7 @@ import { GlobalErrorHandlerService} from "./service/global-error-handler.service
 import { ErrorComponent } from './component/pages/error/error.component';
 import { GlobalHttpinterceptorService} from "./service/global-httpinterceptor.service";
 import { RatingDialogComponent} from "./component/layout/ratingdialog/rating-dialog";
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { RatingDialogComponent} from "./component/layout/ratingdialog/rating-dia
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressBarModule
   ],
   entryComponents:[
     RatingDialogComponent
