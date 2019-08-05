@@ -1,19 +1,20 @@
 
 <!--Jumbotron with form-->
 <div class="jumbotron">
-  <h1 class="display-4">{{title}}</h1>
+  <h1 class="display-4 d-none d-lg-block">{{title}}</h1>
+  <h4 class="d-block d-lg-none">{{title}}</h4>
   <hr class="my-4">
 
   <form >
     <!--    TODO: input with autocomplete-->
     <div class="form-group row">
-      <label for="naam" class="col-sm-2 col-form-label d-md-none d-lg-block">Naam horecazaak</label>
+      <label for="naam" class="col-sm-2 col-form-label d-none d-lg-block">Naam horecazaak</label>
       <div class="col-sm-10">
         <input class="form-control" type="text" placeholder="Naam van de horecazaak" name="name" id="naam" [(ngModel)]="horeca.naam" >
       </div>
     </div>
     <div class="form-group row">
-      <label for="branche" class="col-sm-2 col-form-label d-md-none d-lg-block">Branche</label>
+      <label for="branche" class="col-sm-2 col-form-label d-none d-lg-block">Branche</label>
       <div class="col-sm-10">
         <select class="custom-select" [(ngModel)]="horeca.branche" name="branche" id="branche">
           <option value="" >-- Kies branche --</option>
@@ -22,7 +23,7 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="winkelgebied" class="col-sm-2 col-form-label d-md-none d-lg-block">Winkelgebied</label>
+      <label for="winkelgebied" class="col-sm-2 col-form-label d-none d-lg-block">Winkelgebied</label>
       <div class="col-sm-10">
         <select class="custom-select" [(ngModel)]="horeca.winkelgebied" name="winkelgebied" id="winkelgebied">
           <option value="" >-- Kies winkelgebied --</option>
@@ -57,9 +58,15 @@
       <thead class="thead-dark">
       <tr>
         <th scope="col">Naam</th>
-        <th scope="col">Adres</th>
-        <th scope="col">Branche</th>
-        <th scope="col">Winkelgebied</th>
+        <th scope="col">
+          <span class="d-none d-md-block">Adres</span>
+        </th>
+        <th scope="col">
+          <span class="d-none d-md-block">Branche</span>
+        </th>
+        <th scope="col">
+          <span class="d-none d-md-block">Winkelgebied</span>
+        </th>
         <th scope="col">Rating</th>
         <th scope="col"></th>
       </tr>
@@ -67,14 +74,24 @@
       <tbody>
       <tr *ngFor="let h of horecaPage.content">
         <td>{{h.naam}}</td>
-        <td>
-          {{h.straat}} {{h.huisNr}} {{h.huisNrToev}} <br />
-          {{h.postcode}} {{h.gemeente}}
+        <td >
+          <span class="d-none d-md-block">
+            {{h.straat}} {{h.huisNr}} {{h.huisNrToev}} <br />
+            {{h.postcode}} {{h.gemeente}}
+          </span>
+
         </td>
-        <td>{{h.branche | slice:11}}</td>
-        <td>{{h.winkelgebied}}</td>
+        <td >
+          <span class="d-none d-md-block">{{h.branche | slice:11}}</span>
+        </td>
         <td>
-          <span *ngIf="h.rating > 0; else ratingZero" ><i *ngFor="let i of [].constructor(h.rating)" class="material-icons">star</i></span>
+          <span class="d-none d-md-block">{{h.winkelgebied}}</span>
+        </td>
+        <td>
+          <span *ngIf="h.rating > 0; else ratingZero" class="d-none d-lg-block" >
+            <i *ngFor="let i of [].constructor(h.rating)" class="material-icons">star</i>
+          </span>
+          <span *ngIf="h.rating > 0;" class="d-block d-lg-none">{{h.rating}}</span>
           <ng-template #ratingZero> - </ng-template>
         </td>
         <td>
